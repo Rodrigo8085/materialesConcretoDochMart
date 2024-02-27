@@ -7,6 +7,7 @@ export interface IDiaUso {
   diaObejto: Date;
   diaSemana: string;
   diaNumeroMensual: number;
+  eventos: []
 }
 
 export interface ISemanas {
@@ -137,7 +138,8 @@ export class AgendaComponent implements OnInit {
     return {
       diaObejto: dia,
       diaSemana: this.nombreDias[dia.getDay()],
-      diaNumeroMensual: dia.getDate()
+      diaNumeroMensual: dia.getDate(),
+      eventos: []
     }
   }
 
@@ -169,5 +171,9 @@ export class AgendaComponent implements OnInit {
         this.setearCalendarioTreintaCincoDias(new Date());
         break;
     }
+  }
+
+  eveluarTareasVacias(data: any[]): boolean {
+    return data.length === 0;
   }
 }
