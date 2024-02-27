@@ -89,7 +89,7 @@
             <div *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)" 
                 class="col-3 d-flex justify-content-end align-items-center customIconCrearEvento">
                 <button class="btn btn-primary-outline py-0"
-                    placement="top" ngbTooltip="Nuevo Evento" (click)="createEvent()">
+                    placement="top" ngbTooltip="Nuevo Evento" (click)="createEvent(element?.data[indexData]?.diaObejto)">
                     <i class=" fa-solid fa-calendar-plus fa-sm" ></i>
                 </button>
             </div>

@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { LayoutRoutingModule } from './layout-routing.module';
 import {MatTableModule} from '@angular/material/table';
 import { AgendaComponent } from './agenda/agenda.component';
-import { NgbDatepickerModule, NgbModalModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepickerModule, NgbModalModule, NgbTimepicker, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListaEventosComponent } from './lista-eventos/lista-eventos.component';
 import { NuevoEventoComponent } from './nuevo-evento/nuevo-evento.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatInputModule } from '@angular/material/input'
 
 
 @NgModule({
@@ -26,7 +27,10 @@ import { MatDialogModule } from '@angular/material/dialog';
     FormsModule,
     ReactiveFormsModule,
     MatDialogModule,
-    NgbModalModule
+    NgbModalModule,
+    MatInputModule,
+    NgbTimepicker 
+    
   ]
 })
 export class LayoutModule { }

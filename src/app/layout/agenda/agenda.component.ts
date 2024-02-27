@@ -163,6 +163,12 @@ export class AgendaComponent implements OnInit {
           windowClass: 'modal-xl-step-componentes'
       }
   );
+  modalRef.componentInstance.date = data;
+  modalRef.componentInstance.reloadFn.subscribe((value: boolean) => {
+    if (value === true) {
+      this.dm.setNewDate();
+    }
+  });
     // this.dialog.open(NuevoEventoComponent);
 
   }
