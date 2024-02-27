@@ -6,11 +6,13 @@ import {MatTableModule} from '@angular/material/table';
 import { AgendaComponent } from './agenda/agenda.component';
 import { NgbDatepickerModule, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ListaEventosComponent } from './lista-eventos/lista-eventos.component';
 
 
 @NgModule({
   declarations: [
-    AgendaComponent
+    AgendaComponent,
+    ListaEventosComponent
   ],
   imports: [
     CommonModule,

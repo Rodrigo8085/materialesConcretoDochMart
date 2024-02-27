@@ -127,7 +127,11 @@
                     <i class=" fa-solid fa-calendar-plus fa-sm" ></i>
                 </button>
             </div>
-            <button *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)" type="button" class="btn btn-primary col-12 py-0 tareasCalendar">Block level button</button>
+            <ng-container *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)">
+                <button  *ngFor="let event of element?.data[indexData]?.eventos"type="button" class="btn btn-primary col-12 py-0 tareasCalendar  text-truncate">
+                <span>{{ event.nombre }}</span>
+                </button>
+            </ng-container>
         </div>
         <div *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)" class="col-12 d-flex justify-content-end" >
             <button class="btn btn-primary-outline py-0 customIconEventos " placement="top" ngbTooltip="Ver lista del: {{element?.data[indexData]?.diaSemana }} {{element?.data[indexData]?.diaNumeroMensual}}">

@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { ObtenerListasMensualesService } from 'src/app/services/obtener-listas-mensuales.service';
+import { IEventos } from '../interfaces/IEventos';
 
 
 export interface IDiaUso {
   diaObejto: Date;
   diaSemana: string;
   diaNumeroMensual: number;
-  eventos: []
+  eventos: IEventos[];
 }
 
 export interface ISemanas {
@@ -72,7 +74,8 @@ export class AgendaComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private olms: ObtenerListasMensualesService
   ) { }
 
   ngOnInit(): void {
@@ -103,6 +106,18 @@ export class AgendaComponent implements OnInit {
     // }
     this.diaMedio = this.diasMes[15].diaObejto;
     this.crearSeparadoFilasTablas();
+    this.olms.obtener(this.diaMedio.getFullYear(), this.diaMedio.getMonth()).subscribe(
+      (data: IEventos[]) => {
+        data.forEach(e => {
+          this.dataSource.forEach(d => {
+            const trget = d.data.find(dia => dia.diaObejto.getDate() === e.feachaInicio.getDate() &&
+            dia.diaObejto.getMonth() === e.feachaInicio.getMonth());
+            trget?.eventos.push(e);
+            console.info('olms.obtener', trget);
+          });
+        });
+      }
+    )
   }
 
 
@@ -176,4 +191,5 @@ export class AgendaComponent implements OnInit {
   eveluarTareasVacias(data: any[]): boolean {
     return data.length === 0;
   }
+
 }
