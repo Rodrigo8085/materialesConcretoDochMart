@@ -1,0 +1,152 @@
+<div class="d-flex justify-content-center">
+    <h3>{{ obtenerMes(diaMedio) }} {{ obtenerYear(diaMedio) }}</h3>
+</div>
+<div class="d-flex justify-content-between mb-3">
+    <div class="btn-group" role="group">
+        <!-- <form class="row row-cols-sm-auto">
+            <div class="col-12">
+                <div class="input-group">
+                    <input
+                        class="form-control"
+                        placeholder="yyyy-mm-dd"
+                        name="dp"
+                        [(ngModel)]="model"
+                        ngbDatepicker
+                        #d="ngbDatepicker"
+                        [placement]="placement"
+                        [positionTarget]="buttonEl"
+                    />
+                    <button #buttonEl class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()" type="button"></button>
+                </div>
+            </div>
+        </form> -->
+        <input
+            style="display: none;"
+            class="form-control"
+            placeholder="yyyy-mm-dd"
+            [formControl]="control"
+            name="dp"
+            ngbDatepicker
+            #d="ngbDatepicker"
+            [placement]="placement"
+            [positionTarget]="buttonEl"
+        />
+        <button #buttonEl (click)="d.toggle()" type="button" class="btn btn-primary" placement="top" ngbTooltip="Seleccionar fecha">
+            <i class="fa-regular fa-calendar"></i>
+        </button>
+        <button type="button" class="btn btn-primary" placement="top" ngbTooltip="Mes Anterior"
+        (click)="setNewDate('minus')">
+            <i class="fa-solid fa-caret-left"></i>
+        </button>
+        <button type="button" class="btn btn-primary" placement="top" ngbTooltip="Mes Siguiente"
+        (click)="setNewDate('add')">
+            <i class="fa-solid fa-caret-right"></i>
+        </button>
+        <button type="button" class="btn btn-primary"
+        (click)="setNewDate()">
+            <span>Hoy</span>
+        </button>
+    </div>
+    <button type="button" class="btn btn-success">Lista hoy</button>
+</div>
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8 pb-3">
+    <ng-container matColumnDef="Domingo">
+      <mat-header-cell *matHeaderCellDef> Domingo </mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index;">
+        <ng-container *ngTemplateOutlet="formConstruct;
+            context:{
+                indexData: 0,
+                element
+            }"
+        ></ng-container>
+    </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Lunes">
+        <mat-header-cell *matHeaderCellDef> Lunes </mat-header-cell>
+        <mat-cell *matCellDef="let element"> 
+            <ng-container *ngTemplateOutlet="formConstruct;
+            context:{
+                indexData: 1,
+                element
+            }"
+        ></ng-container>
+        </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Martes">
+        <mat-header-cell *matHeaderCellDef> Martes </mat-header-cell>
+        <mat-cell *matCellDef="let element"> 
+            <ng-container *ngTemplateOutlet="formConstruct;
+            context:{
+                indexData: 2,
+                element
+            }"
+        ></ng-container>
+    </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Miercoles">
+        <mat-header-cell *matHeaderCellDef> Miercoles </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <ng-container *ngTemplateOutlet="formConstruct;
+            context:{
+                indexData: 3,
+                element
+            }"
+        ></ng-container>
+    </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Jueves">
+        <mat-header-cell *matHeaderCellDef> Jueves </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <ng-container *ngTemplateOutlet="formConstruct;
+            context:{
+                indexData: 4,
+                element
+            }"
+        ></ng-container>
+    </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Viernes">
+        <mat-header-cell *matHeaderCellDef> Viernes </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <ng-container *ngTemplateOutlet="formConstruct;
+            context:{
+                indexData: 5,
+                element
+            }"
+        ></ng-container>
+    </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="Sábado">
+        <mat-header-cell *matHeaderCellDef> Sábado </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+            <ng-container *ngTemplateOutlet="formConstruct;
+            context:{
+                indexData: 6,
+                element
+            }"
+        ></ng-container>
+    </mat-cell>
+    </ng-container>  
+    <mat-header-row *matHeaderRowDef="nombreDias"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: nombreDias;"></mat-row>
+  </mat-table>
+  <ng-template let-indexData="indexData" let-element="element" #formConstruct>
+    <div style="height: 95%;" class="d-flex align-content-between flex-wrap">
+        <div class="col-12" [ngClass]="{ 'row': !evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)}">
+            <span class="col-9" [ngClass]="{'text-muted': evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)}">{{element?.data[indexData]?.diaNumeroMensual}}</span>
+            <div *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)" 
+                class="col-3 d-flex justify-content-end align-items-center customIconCrearEvento">
+            <button class="btn btn-primary-outline py-0"
+                placement="top" ngbTooltip="Nuevo Evento">
+                <i class=" fa-solid fa-calendar-plus fa-sm" ></i>
+            </button>
+            </div>
+            <button *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)" type="button" class="btn btn-primary col-12 py-0 tareasCalendar">Block level button</button>
+        </div>
+        <div *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)" class="col-12 d-flex justify-content-end" >
+            <button class="btn btn-primary-outline py-0 customIconEventos " placement="top" ngbTooltip="Ver lista del: {{element?.data[indexData]?.diaSemana }} {{element?.data[indexData]?.diaNumeroMensual}}">
+                <i class="fa-solid fa-calendar-day py-0 fa-xs" ></i>
+            </button>
+        </div>
+    </div>
+  </ng-template>

@@ -1,0 +1,36 @@
+.mat-mdc-table {
+    width: 100%;
+    max-height: 90%;
+    // max-height: 500px;
+    // overflow: auto;
+  }
+  
+  .mat-column-name {
+    height: 100px;
+  }
+  
+  ::ng-deep  .mat-mdc-cell {
+    height: 20vh;
+    display: flex;
+    align-items: baseline;
+}
+
+.tareasCalendar {
+    font-size: .7rem;
+}
+
+.customIconEventos{
+    margin-right: .75rem !important;
+}
+
+.customIconCrearEvento {
+    padding-right: 0px !important;
+}
+
+h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: unset;
+    line-height: unset;
+    letter-spacing: 1rem
+}

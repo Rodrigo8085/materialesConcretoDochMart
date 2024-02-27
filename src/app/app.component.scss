@@ -1,0 +1,26 @@
+.container {
+  height: 100% !important;
+}
+
+.banner {
+  width: 100%;
+  height: 200px;
+  background-image: linear-gradient(to right, #011acc, #18a2de);
+  color: #ffffff;
+  text-align: center;
+  font-family: "Rubik", sans-serif;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-top: unset;
+    line-height: unset;
+    letter-spacing: 1rem;
+}
+
+
+p {
+    font-size: 1rem;
+}
+
