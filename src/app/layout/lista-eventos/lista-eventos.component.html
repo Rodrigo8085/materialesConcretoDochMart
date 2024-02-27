@@ -1,1 +1,28 @@
-<p>lista-eventos works!</p>
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8 pb-3">
+    <ng-container *ngFor="let conf of displayColumns; let i = index" matColumnDef="{{conf}}">
+      <mat-header-cell 
+        *matHeaderCellDef>{{ conf === 'Manana' ? 'Mañana' : conf }}</mat-header-cell>
+      <mat-cell *matCellDef="let element; let i = index;" class="d-flex row  mx-0 px-0">
+        <ng-container *ngTemplateOutlet="formConstruct;
+            context:{
+                element,
+                conf
+            }"
+        ></ng-container>
+    </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+</mat-table>
+  <ng-template  let-element="element" let-conf="conf" #formConstruct>
+    <div>
+        <ng-container *ngIf="conf !== 'Horarios' && element[conf]">
+            <button type="button" class="btn btn-primary col-12  text-truncate">
+                <span>{{ element[conf]?.nombre }}</span>
+            </button>
+        </ng-container>
+        <ng-container *ngIf="conf === 'Horarios'">
+            <span>{{ element?.Horarios }}</span>
+        </ng-container>
+    </div>
+  </ng-template>

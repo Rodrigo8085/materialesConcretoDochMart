@@ -8,12 +8,9 @@ import { Observable, of } from 'rxjs';
 })
 export class ObtenerListasMensualesService {
 
-  constructor(
-
-  ) { }
+  constructor() { }
 
   obtener(year: number, mes: number): Observable<IEventos[]> {
-    console.info(mes);
     switch (mes) {
       case 1:
         return of(Febrero.filter(f => f.feachaInicio.getFullYear() === year));

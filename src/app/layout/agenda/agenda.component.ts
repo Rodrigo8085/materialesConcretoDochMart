@@ -1,22 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { AgendaCalendarioInteractionService } from 'src/app/services/interaction/agenda-calendario-interaction.service';
+import { ValorDiaMedioInteractionService } from 'src/app/services/interaction/valor-dia-medio-interaction.service';
 import { ObtenerListasMensualesService } from 'src/app/services/obtener-listas-mensuales.service';
+import { MatDialog } from '@angular/material/dialog';
+
 import { IEventos } from '../interfaces/IEventos';
-
-
-export interface IDiaUso {
-  diaObejto: Date;
-  diaSemana: string;
-  diaNumeroMensual: number;
-  eventos: IEventos[];
-}
-
-export interface ISemanas {
-  view: boolean;
-  semana: number;
-  data: IDiaUso[];
-}
+import { determinateMes } from '../shared/functions/determinateMes';
+import { IDiaUso } from '../interfaces/IDiaUso';
+import { ISemanas } from '../interfaces/ISemanas';
+import { NuevoEventoComponent } from '../nuevo-evento/nuevo-evento.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-agenda',
@@ -24,20 +17,9 @@ export interface ISemanas {
   styleUrls: ['./agenda.component.scss']
 })
 export class AgendaComponent implements OnInit {
-  model: NgbDateStruct = {
-    year: 2020,
-    month: 1,
-    day: 0
-  };
 
-  control!: FormControl;
-  placement = 'bottom';
   dataSource: ISemanas[] = [];
   nombreDias: Readonly<string[]> = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'];
-  nombreMes: Readonly<string[]> = [
-    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
-  ];
   diasMes: IDiaUso[] = [];
   diaMedio: Date = new Date();
   dataCalendario: ISemanas[] = [
@@ -74,20 +56,24 @@ export class AgendaComponent implements OnInit {
   ];
 
   constructor(
-    private fb: FormBuilder,
-    private olms: ObtenerListasMensualesService
-  ) { }
+    private olms: ObtenerListasMensualesService,
+    private acis: AgendaCalendarioInteractionService,
+    private vdmis: ValorDiaMedioInteractionService,
+    private dm: determinateMes,
+    public dialog: MatDialog,
+    private modalService: NgbModal,
 
-  ngOnInit(): void {
-    this.control = this.fb.control(this.model);
-    this.subcribeBtn();
-    this.setNewDate();
+
+  ) {
+    this.acis.newDateEmiter$.subscribe({
+      next: (date: Date) => {
+        this.setearCalendarioTreintaCincoDias(date);
+      }
+    });
   }
 
-  subcribeBtn() {
-    this.control.valueChanges.subscribe((v: NgbDateStruct) => {
-      this.setearCalendarioTreintaCincoDias(new Date(v.year, v.month - 1, 1));
-    })
+  ngOnInit(): void {
+    this.dm.setNewDate();
   }
 
   setearCalendarioTreintaCincoDias(fechaObjetivo: Date): void {
@@ -105,15 +91,15 @@ export class AgendaComponent implements OnInit {
     //   throw new Error("Error en la creacion mas elementos de los necesarios");
     // }
     this.diaMedio = this.diasMes[15].diaObejto;
+    this.vdmis.notifyDiaMedio(this.diasMes[15].diaObejto);
     this.crearSeparadoFilasTablas();
     this.olms.obtener(this.diaMedio.getFullYear(), this.diaMedio.getMonth()).subscribe(
       (data: IEventos[]) => {
         data.forEach(e => {
           this.dataSource.forEach(d => {
             const trget = d.data.find(dia => dia.diaObejto.getDate() === e.feachaInicio.getDate() &&
-            dia.diaObejto.getMonth() === e.feachaInicio.getMonth());
+              dia.diaObejto.getMonth() === e.feachaInicio.getMonth());
             trget?.eventos.push(e);
-            console.info('olms.obtener', trget);
           });
         });
       }
@@ -158,38 +144,27 @@ export class AgendaComponent implements OnInit {
     }
   }
 
-  obtenerMes(dia: Date): string {
-    return this.nombreMes[dia.getMonth()];
-  }
-
-  obtenerYear(dia: Date): string {
-    return dia.getFullYear().toString();
-  }
-
   evaluarDiaFueraMes(diaObjetivo: Date): boolean {
     return this.diaMedio?.getMonth() !== diaObjetivo?.getMonth();
   }
 
-  desplegarLista(evento: any): void {
-    console.info(evento);
-  }
-
-  setNewDate(accion?: string): void {
-    switch (accion) {
-      case 'minus':
-        this.setearCalendarioTreintaCincoDias(new Date(this.diaMedio.getFullYear(), this.diaMedio.getMonth() - 1));
-        break;
-      case 'add':
-        this.setearCalendarioTreintaCincoDias(new Date(this.diaMedio.getFullYear(), this.diaMedio.getMonth() + 1));
-        break;
-      default:
-        this.setearCalendarioTreintaCincoDias(new Date());
-        break;
-    }
-  }
-
   eveluarTareasVacias(data: any[]): boolean {
     return data.length === 0;
+  }
+
+
+  createEvent(data?: any): void {
+    const modalRef = this.modalService.open(
+      NuevoEventoComponent,
+      {
+          size: 'lg',
+          backdrop: 'static',
+          keyboard: false,
+          windowClass: 'modal-xl-step-componentes'
+      }
+  );
+    // this.dialog.open(NuevoEventoComponent);
+
   }
 
 }
