@@ -17,7 +17,7 @@
   <ng-template  let-element="element" let-conf="conf" #formConstruct>
     <div>
         <ng-container *ngIf="conf !== 'Horarios' && element[conf]">
-            <button type="button" class="btn btn-primary col-12  text-truncate">
+            <button type="button" class="btn btn-primary col-12  text-truncate" (click)="createEvent(undefined, element[conf])">
                 <span>{{ element[conf]?.nombre }}</span>
             </button>
         </ng-container>

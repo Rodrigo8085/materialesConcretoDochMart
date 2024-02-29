@@ -5,6 +5,8 @@ import { AgendaCalendarioInteractionService } from 'src/app/services/interaction
 import { ObtenerListasMensualesService } from 'src/app/services/obtener-listas-mensuales.service';
 
 import { IEventos } from '../interfaces/IEventos';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NuevoEventoComponent } from '../nuevo-evento/nuevo-evento.component';
 
 @Component({
   selector: 'app-lista-eventos',
@@ -70,7 +72,9 @@ export class ListaEventosComponent implements OnInit, OnDestroy {
   constructor(
     private acis: AgendaCalendarioInteractionService,
     private olms: ObtenerListasMensualesService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal,
+
   ) {
     this.diaTragetSubscription = this.acis.newDateEmiter$.subscribe({
       next: (data: Date) => {
@@ -125,6 +129,21 @@ export class ListaEventosComponent implements OnInit, OnDestroy {
       });
     });
     this.dataSource = newDataSource;
+  }
+
+  createEvent(date?: Date, dataEvent?: IEventos): void {
+    const modalRef = this.modalService.open(
+      NuevoEventoComponent,
+      {
+        size: 'lg',
+        backdrop: 'static',
+        keyboard: false,
+        windowClass: 'modal-xl-step-componentes'
+      }
+    );
+    modalRef.componentInstance.date = date;
+    modalRef.componentInstance.dataEvent = dataEvent;
+
   }
 
 }
