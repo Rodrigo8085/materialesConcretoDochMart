@@ -52,7 +52,9 @@ export class AppComponent implements OnInit  {
     })
   }
   navegarLista() {
-    this.dm.setNewDate();
     this.router.navigate(['/lista']);
+    setTimeout(() => {
+      this.dm.setNewDate();
+    }, 10);
   }
 }

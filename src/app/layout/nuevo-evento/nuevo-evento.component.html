@@ -54,7 +54,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button *ngIf="!dataEvent" type="button" class="btn btn-success" (click)="guardar(form)" [disabled]="saveText !== ''">
+    <button *ngIf="!dataEvent" type="button" class="btn btn-success" (click)="guardar(form)" [disabled]="saveText !== '' || form.invalid">
         <i class="fa-regular fa-calendar-check mr-2"></i>
         <span *ngIf="saveText === ''">
             Guardar
@@ -69,7 +69,7 @@
           Editar
       </span>
     </button>
-    <button *ngIf="dataEvent && !form.disabled" type="button" class="btn btn-warning" (click)="update(form, dataEvent)" [disabled]="saveText !== ''">
+    <button *ngIf="dataEvent && !form.disabled" type="button" class="btn btn-warning" (click)="update(form, dataEvent)" [disabled]="saveText !== ''|| form.invalid">
       <i class="fa-solid fa-calendar mr-2"></i>
       <span *ngIf="saveText === ''">
           Actualizar
