@@ -1,4 +1,6 @@
-export let Febrero = [
+import { IEventos } from "src/app/layout/interfaces/IEventos";
+
+export let Febrero: IEventos[] = [
     {
         feachaInicio: new Date(2024,1, 27, 12, 0,0,0),
         fechaFin: new Date(2024,1, 27, 13, 0,0,0),

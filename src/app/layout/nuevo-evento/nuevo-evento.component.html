@@ -1,7 +1,11 @@
 <div class="modal-header d-flex row">
-  <h4 class="col-9 align-items-center">
+  <h4 *ngIf="!dataEvent" class="col-9 align-items-center">
     <i class="fa-regular fa-calendar-plus text-info mr-2"></i>
     Crear Evento
+  </h4>
+  <h4 *ngIf="dataEvent" class="col-9 align-items-center">
+    <i class="fa-regular fa-calendar text-info mr-2"></i>
+    Evento
   </h4>
   <div class="col-3 d-flex justify-content-end align-items-center">
     <button
@@ -18,7 +22,6 @@
         <ng-container *ngFor="let ctrlConfig of configForm">
           <ng-container [ngSwitch]="ctrlConfig.type">
               <ng-container *ngSwitchCase="'date'">
-                <!-- style="display: none;" -->
                   <input
                   class="form-control"
                   placeholder="yyyy-mm-dd"
@@ -29,7 +32,9 @@
                   placement="bottom"
                   [positionTarget]="buttonEl"
               />
-              <button #buttonEl (click)="d.toggle()" type="button" class="btn btn-primary" placement="top" ngbTooltip="Seleccionar fecha">
+              <button #buttonEl (click)="d.toggle()" type="button" 
+                class="btn btn-primary" placement="top" ngbTooltip="Seleccionar fecha"
+                [disabled]="form?.get(ctrlConfig.bind)?.disabled">
                   <i class="fa-regular fa-calendar"></i>
               </button>
               </ng-container>
@@ -42,13 +47,6 @@
                     <mat-label>{{ ctrlConfig .label }}</mat-label>
                     <input type="{{ ctrlConfig.typeInput }}" matInput [formControl]="form?.get(ctrlConfig.bind)"
                            placeholder="{{ctrlConfig.placeholder}}">
-                    <!-- <mat-hint>Errors appear instantly!</mat-hint>
-                    <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                      Please enter a valid email address
-                    </mat-error>
-                    <mat-error *ngIf="emailFormControl.hasError('required')">
-                      Email is <strong>required</strong> 
-                    </mat-error> -->
                   </mat-form-field>
               </ng-container>
           </ng-container>
@@ -56,7 +54,7 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-success" (click)="guardar(form)" [disabled]="saveText !== ''">
+    <button *ngIf="!dataEvent" type="button" class="btn btn-success" (click)="guardar(form)" [disabled]="saveText !== ''">
         <i class="fa-regular fa-calendar-check mr-2"></i>
         <span *ngIf="saveText === ''">
             Guardar
@@ -64,5 +62,20 @@
         <span *ngIf="saveText !== ''">
             {{ saveText }}
         </span>
+    </button>
+    <button *ngIf="dataEvent && form.disabled" type="button" class="btn btn-warning" (click)="form.enable()" [disabled]="saveText !== ''">
+      <i class="fa-regular fa-calendar-days mr-2"></i>
+      <span *ngIf="saveText === ''">
+          Editar
+      </span>
+    </button>
+    <button *ngIf="dataEvent && !form.disabled" type="button" class="btn btn-warning" (click)="update(form, dataEvent)" [disabled]="saveText !== ''">
+      <i class="fa-solid fa-calendar mr-2"></i>
+      <span *ngIf="saveText === ''">
+          Actualizar
+      </span>
+      <span *ngIf="saveText !== ''">
+        {{ saveText }}
+    </span>
     </button>
 </div>
