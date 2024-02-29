@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgendaCalendarioInteractionService } from 'src/app/services/interaction/agenda-calendario-interaction.service';
 import { ValorDiaMedioInteractionService } from 'src/app/services/interaction/valor-dia-medio-interaction.service';
 import { ObtenerListasMensualesService } from 'src/app/services/obtener-listas-mensuales.service';
-import { MatDialog } from '@angular/material/dialog';
 
-import { IEventos } from '../interfaces/IEventos';
-import { determinateMes } from '../shared/functions/determinateMes';
 import { IDiaUso } from '../interfaces/IDiaUso';
+import { IEventos } from '../interfaces/IEventos';
 import { ISemanas } from '../interfaces/ISemanas';
 import { NuevoEventoComponent } from '../nuevo-evento/nuevo-evento.component';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { determinateMes } from '../shared/functions/determinateMes';
 
 @Component({
   selector: 'app-agenda',
@@ -153,24 +153,23 @@ export class AgendaComponent implements OnInit {
   }
 
 
-  createEvent(data?: any): void {
+  createEvent(date?: Date, dataEvent?: IEventos): void {
     const modalRef = this.modalService.open(
       NuevoEventoComponent,
       {
-          size: 'lg',
-          backdrop: 'static',
-          keyboard: false,
-          windowClass: 'modal-xl-step-componentes'
+        size: 'lg',
+        backdrop: 'static',
+        keyboard: false,
+        windowClass: 'modal-xl-step-componentes'
       }
-  );
-  modalRef.componentInstance.date = data;
-  modalRef.componentInstance.reloadFn.subscribe((value: boolean) => {
-    if (value === true) {
-      this.dm.setNewDate();
-    }
-  });
-    // this.dialog.open(NuevoEventoComponent);
-
+    );
+    modalRef.componentInstance.date = date;
+    modalRef.componentInstance.dataEvent = dataEvent;
+    modalRef.componentInstance.reloadFn.subscribe((value: boolean) => {
+      if (value === true) {
+        this.dm.setNewDate();
+      }
+    });
   }
 
 }

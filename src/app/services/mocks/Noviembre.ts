@@ -1,3 +1,3 @@
 import { IEventos } from "src/app/layout/interfaces/IEventos";
 
-export let Marzo: IEventos[] = [];
+export let Noviembre: IEventos[] = [];

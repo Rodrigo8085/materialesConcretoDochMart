@@ -94,7 +94,8 @@
                 </button>
             </div>
             <ng-container *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)">
-                <button  *ngFor="let event of element?.data[indexData]?.eventos"type="button" class="btn btn-primary col-12 py-0 tareasCalendar  text-truncate">
+                <button  *ngFor="let event of element?.data[indexData]?.eventos"type="button" class="btn btn-primary col-12 py-0 tareasCalendar  text-truncate"
+                (click)="createEvent(element?.data[indexData]?.diaObejto, event)">
                 <span>{{ event.nombre }}</span>
                 </button>
             </ng-container>
