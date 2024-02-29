@@ -10,5 +10,11 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 Desarrollo de una agenda de altas y bajas de eventos y la visualización de los mismos en un calendario 
 
-https://github.com/Rodrigo8085/materialesConcretoDochMart/blob/master/src/assets/img/screencapture-localhost-4200-2024-02-29-00_24_06.png
 
+![alt text](https://github.com/Rodrigo8085/materialesConcretoDochMart/blob/master/src/assets/img/screencapture-localhost-4200-2024-02-29-00_24_06.png?raw=true)
+
+![alt text](https://github.com/Rodrigo8085/materialesConcretoDochMart/blob/master/src/assets/img/screencapture-localhost-4200-2024-02-29-00_24_47.png?raw=true)
+
+![alt text](https://github.com/Rodrigo8085/materialesConcretoDochMart/blob/master/src/assets/img/screencapture-localhost-4200-2024-02-29-00_24_37.png?raw=true)
+
+![alt text](https://github.com/Rodrigo8085/materialesConcretoDochMart/blob/master/src/assets/img/screencapture-localhost-4200-lista-2024-02-29-00_24_22.png?raw=true)
