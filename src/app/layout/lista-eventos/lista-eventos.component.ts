@@ -75,7 +75,6 @@ export class ListaEventosComponent implements OnInit, OnDestroy {
     this.diaTragetSubscription = this.acis.newDateEmiter$.subscribe({
       next: (data: Date) => {
         this.diaTarget = data;
-        console.info('ListaEventosComponent', data)
         this.getEventos();
       },
     });
@@ -115,9 +114,6 @@ export class ListaEventosComponent implements OnInit, OnDestroy {
     horarios.forEach((h, index) => {
       const dateHConfig = new Date(this.diaTarget.getFullYear(), this.diaTarget.getMonth(),
         this.diaTarget.getDate(), this.numeroHorarios24[index], 0)
-        console.info(this.dataEventosHoy, dateHConfig,
-          this.dataEventosHoy.find(f => f.feachaInicio.getHours() === dateHConfig.getHours() &&
-          f.fechaFin.getHours() >= dateHConfig.getHours() + 1));
       newDataSource.push({
         Horarios: h,
         Hoy: this.dataEventosHoy.find(f => f.feachaInicio.getHours() === dateHConfig.getHours() &&
