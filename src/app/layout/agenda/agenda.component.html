@@ -101,7 +101,8 @@
             </ng-container>
         </div>
         <div *ngIf="!evaluarDiaFueraMes(element?.data[indexData]?.diaObejto)" class="col-12 d-flex justify-content-end" >
-            <button class="btn btn-primary-outline py-0 customIconEventos " placement="top" ngbTooltip="Ver lista del: {{element?.data[indexData]?.diaSemana }} {{element?.data[indexData]?.diaNumeroMensual}}">
+            <button class="btn btn-primary-outline py-0 customIconEventos " 
+                (click)="navigateListaHora(element?.data[indexData]?.diaObejto)" placement="top" ngbTooltip="Ver lista del: {{element?.data[indexData]?.diaSemana }} {{element?.data[indexData]?.diaNumeroMensual}}">
                 <i class="fa-solid fa-calendar-day py-0 fa-xs" ></i>
             </button>
         </div>

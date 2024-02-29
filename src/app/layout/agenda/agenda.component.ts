@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AgendaCalendarioInteractionService } from 'src/app/services/interaction/agenda-calendario-interaction.service';
 import { ValorDiaMedioInteractionService } from 'src/app/services/interaction/valor-dia-medio-interaction.service';
@@ -62,8 +63,7 @@ export class AgendaComponent implements OnInit {
     private dm: determinateMes,
     public dialog: MatDialog,
     private modalService: NgbModal,
-
-
+    private router: Router
   ) {
     this.acis.newDateEmiter$.subscribe({
       next: (date: Date) => {
@@ -170,6 +170,13 @@ export class AgendaComponent implements OnInit {
         this.dm.setNewDate();
       }
     });
+  }
+
+  navigateListaHora(date: Date) {
+    this.router.navigate(['/lista']);
+    setTimeout(() => {
+      this.acis.notifyNewDateCalendar(date);
+    }, 100);
   }
 
 }

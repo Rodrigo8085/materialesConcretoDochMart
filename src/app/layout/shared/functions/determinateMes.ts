@@ -19,7 +19,6 @@ export class determinateMes {
       })
     }
     setNewDate(accion?: string): void {
-    
     switch (accion) {
       case 'minus':
         this.acis.notifyNewDateCalendar(new Date(this.diaMedio.getFullYear(), this.diaMedio.getMonth() - 1));

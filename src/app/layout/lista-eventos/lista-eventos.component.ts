@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { filter } from 'rxjs';
-import { ValorDiaMedioInteractionService } from 'src/app/services/interaction/valor-dia-medio-interaction.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { AgendaCalendarioInteractionService } from 'src/app/services/interaction/agenda-calendario-interaction.service';
 import { ObtenerListasMensualesService } from 'src/app/services/obtener-listas-mensuales.service';
+
 import { IEventos } from '../interfaces/IEventos';
 
 @Component({
@@ -9,7 +11,7 @@ import { IEventos } from '../interfaces/IEventos';
   templateUrl: './lista-eventos.component.html',
   styleUrls: ['./lista-eventos.component.scss']
 })
-export class ListaEventosComponent implements OnInit {
+export class ListaEventosComponent implements OnInit, OnDestroy {
   dataSource: any[] = [];
   displayColumns: string[] = [
     'hora0',
@@ -63,16 +65,18 @@ export class ListaEventosComponent implements OnInit {
   dataEventosManana: IEventos[] = [];
   dataEventosPasado: IEventos[] = [];
 
+  diaTragetSubscription: Subscription;
 
   constructor(
-    private vdmis: ValorDiaMedioInteractionService,
-    private olms: ObtenerListasMensualesService
+    private acis: AgendaCalendarioInteractionService,
+    private olms: ObtenerListasMensualesService,
+    private router: Router
   ) {
-    this.vdmis.diaMedioEmiter$.subscribe({
+    this.diaTragetSubscription = this.acis.newDateEmiter$.subscribe({
       next: (data: Date) => {
         this.diaTarget = data;
         this.getEventos();
-      }
+      },
     });
   }
 
@@ -84,9 +88,12 @@ export class ListaEventosComponent implements OnInit {
       'Hoy',
       'Manana',
       'Pasado'
-    ]
+    ];
     this.getEventos();
-      
+  }
+
+  ngOnDestroy(): void {
+    this.diaTragetSubscription.unsubscribe();
   }
 
 
@@ -95,7 +102,7 @@ export class ListaEventosComponent implements OnInit {
       next: (dataEventos: IEventos[]) => {
         this.dataEventosHoy = dataEventos.filter(f => f.feachaInicio.getDate() === this.diaTarget.getDate());
         this.dataEventosManana = dataEventos.filter(f => f.feachaInicio.getDate() === (this.diaTarget.getDate() + 1));
-        this.dataEventosPasado = dataEventos.filter(f => f.feachaInicio.getDate() === (this.diaTarget.getDate() + 2 ));
+        this.dataEventosPasado = dataEventos.filter(f => f.feachaInicio.getDate() === (this.diaTarget.getDate() + 2));
         this.setValuesHorariosEvento();
       }
     });
@@ -103,20 +110,21 @@ export class ListaEventosComponent implements OnInit {
 
   setValuesHorariosEvento() {
     const horarios = this.nombreHorarios.filter(f => f !== 'Fecha');
+    const newDataSource: any[] = []
     horarios.forEach((h, index) => {
-      
-      const dateHConfig = new Date(this.diaTarget.getFullYear(), this.diaTarget.getMonth(), 
-      this.diaTarget.getDate(), this.numeroHorarios24[index], 0)
-      this.dataSource.push({
+      const dateHConfig = new Date(this.diaTarget.getFullYear(), this.diaTarget.getMonth(),
+        this.diaTarget.getDate(), this.numeroHorarios24[index], 0)
+      newDataSource.push({
         Horarios: h,
         Hoy: this.dataEventosHoy.find(f => f.feachaInicio.getHours() === dateHConfig.getHours() &&
-        f.fechaFin.getHours() >= dateHConfig.getHours() + 1),
+          f.fechaFin.getHours() >= dateHConfig.getHours() + 1),
         Manana: this.dataEventosManana.find(f => f.feachaInicio.getHours() === dateHConfig.getHours() &&
-        f.fechaFin.getHours() >= dateHConfig.getHours() + 1),
+          f.fechaFin.getHours() >= dateHConfig.getHours() + 1),
         Pasado: this.dataEventosPasado.find(f => f.feachaInicio.getHours() === dateHConfig.getHours() &&
-        f.fechaFin.getHours() >= dateHConfig.getHours() + 1)
+          f.fechaFin.getHours() >= dateHConfig.getHours() + 1)
       });
     });
+    this.dataSource = newDataSource;
   }
 
 }
